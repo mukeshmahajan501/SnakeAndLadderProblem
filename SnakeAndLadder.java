@@ -5,6 +5,7 @@ public class SnakeAndLadder {
 	// initializing variable
 	int playerPosition = 0;
 	int currentPosition = 0;
+	int dieRollCount = 0;
 
 	// function to get which type of move should player to play
 	public int moveType() {
@@ -25,6 +26,7 @@ public class SnakeAndLadder {
 		int moveType = moveType();
 		int dieNumber = getRollDieNumber();
 
+		dieRollCount++;
 		// assign player position to current position
 		currentPosition = playerPosition;
 
@@ -40,7 +42,7 @@ public class SnakeAndLadder {
 		} else {
 			playerPosition = currentPosition;
 		}
-		System.out.println("player position: " + playerPosition);
+		System.out.println("player position: " + playerPosition + " " + "Die Roll count: " + dieRollCount);
 
 		if (playerPosition <= 0) {
 			playerPosition = 0;
@@ -60,7 +62,7 @@ public class SnakeAndLadder {
 		}
 
 		if (playerPosition == 100) {
-			System.out.println("player won the game");
+			System.out.println("player won the game!!!" + "number of times dice was played: " + dieRollCount);
 		}
 
 	}
