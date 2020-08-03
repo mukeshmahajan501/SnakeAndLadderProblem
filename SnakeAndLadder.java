@@ -3,64 +3,72 @@ import java.util.Random;
 
 public class SnakeAndLadder {
 	// initializing variable
-	int position = 0;
-	final int NO_PLAY = 1;
-	final int SNAKE = 2;
-	final int LADDER = 3;
-	final int START_POSITION = 0;
+	int playerPosition = 0;
+	int currentPosition = 0;
 
-	// function to get dice number between 1 to 6
-	public static int getDiceNumber() {
-		Random random = new Random();
-		return random.nextInt(6) + 1;
-	}
-
-	// function to get number between 1 to 3
-	public static int typeOfMove() {
+	// function to get which type of move should player to play
+	public int moveType() {
 		Random random = new Random();
 		return random.nextInt(3) + 1;
 	}
 
-	// check for player position
-	public void checkPlayerPosition() {
-		while (position != 100) {
+	// function to get rolledDie
+	public int getRollDieNumber() {
+		Random random = new Random();
+		return random.nextInt(6) + 1;
 
-			int diceNumber = getDiceNumber();
-			int moveType = typeOfMove();
+	}
 
-			System.out.println("dice number: " + diceNumber);
-			System.out.println("move type: " + moveType);
-			switch (moveType) {
-			case NO_PLAY:
-				position = position;
-				break;
-			case SNAKE:
-				position = (position - diceNumber);
+	// function to decide which type of move player played.
+	public void movingPosition() {
 
-				break;
-			case LADDER:
-				position = (position + diceNumber);
+		int moveType = moveType();
+		int dieNumber = getRollDieNumber();
 
-				break;
-			}
+		// assign player position to current position
+		currentPosition = playerPosition;
 
-			// if position is minus then assign 0
-			if (position <= 0) {
-				position = START_POSITION;
-			}
+		System.out.println("move type: " + moveType);
+		System.out.println("roll die Number: " + dieNumber);
+		System.out.println("current position: " + currentPosition);
 
-			System.out.println("player position:" + position);
+		if (moveType == 1) {
+			playerPosition += dieNumber;
+		} else if (moveType == 2) {
+			playerPosition -= dieNumber;
+
+		} else {
+			playerPosition = currentPosition;
 		}
-		// checking matching condition
-		if (position == 100) {
-			System.out.println("player won the game!!!!");
+		System.out.println("player position: " + playerPosition);
+
+		if (playerPosition <= 0) {
+			playerPosition = 0;
+		}
+
+		if (playerPosition > 100) {
+			playerPosition = currentPosition;
+		}
+
+	}
+
+	// function to decide player winning
+	public void checkPlayerWin() {
+
+		while (playerPosition != 100) {
+			movingPosition();
+		}
+
+		if (playerPosition == 100) {
+			System.out.println("player won the game");
 		}
 
 	}
 
 	public static void main(String[] args) {
+
 		SnakeAndLadder object = new SnakeAndLadder();
-		object.checkPlayerPosition();
+		object.checkPlayerWin();
 	}
 
 }
