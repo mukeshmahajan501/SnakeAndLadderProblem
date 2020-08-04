@@ -1,93 +1,108 @@
-
+package com.test;
 
 import java.util.Random;
 
 public class SnakeAndLadder {
-	// initializing variable
-	int playerPosition;
-	int currentPosition;
-	int diceRollCount;
-	final int WINNING_POINT = 100;
-	final int LADDER = 1;
-	final int SNAKE = 2;
-	final int NO_PLAY = 3;
+	int numOfPlayer = 4;
+	int playerPositionArray[] = new int[numOfPlayer];
 
-	// function to get which type of move should player to play
-	public int moveType() {
+	int START_POSITION = 0;
+	final int NO_PLAY = 1;
+	final int LADDER = 2;
+	final int SNAKE = 3;
+	final int WINING_POINT = 100;
+	int position = 0;
+	int currentPosition = 0;
+
+	public void setPlayerPosition() {
+		for (int i = 0; i < playerPositionArray.length; i++) {
+			playerPositionArray[i] = 0;
+		}
+
+	}
+
+	public int getDiceRoll() {
+		Random random = new Random();
+		return random.nextInt(6) + 1;
+	}
+
+	public int getMoveType() {
 		Random random = new Random();
 		return random.nextInt(3) + 1;
 	}
 
-	// function to get rolledDie
-	public int getRollDieNumber() {
-		Random random = new Random();
-		return random.nextInt(6) + 1;
+	public void playing() {
 
-	}
+		for (int i = 0; i < playerPositionArray.length; i++) {
+			int diceNumber = getDiceRoll();
+			int moveType = getMoveType();
 
-	// function to get player position
-	public void getPlayerPosition() {
+			// currentPosition = playerPositionArray[i];
+			// if (playerPositionArray[i] > 100) {
+			// playerPositionArray[i] = currentPosition;
+			// }
+			switch (moveType) {
+			case NO_PLAY:
+				System.out.println("no play");
+				break;
+			case LADDER:
 
-		int moveType = moveType();
-		int diceNumber = getRollDieNumber();
+				if (playerPositionArray[i] > WINING_POINT) {
+					System.out.println("you can't move!!");
 
-		// assign player position to current position
-		currentPosition = playerPosition;
+				} else {
+					playerPositionArray[i] = playerPositionArray[i] + diceNumber;
+					System.out.println("you got ladder move forword");
 
-		System.out.println("move type: " + moveType);
-		System.out.println("roll dice Number: " + diceNumber);
-		System.out.println("current position: " + currentPosition);
+						playing();
 
-		switch (moveType) {
-		case LADDER:
-			if (playerPosition + diceNumber > WINNING_POINT) {
-				System.out.println("skip !!try again");
-			} else {
-				playerPosition += diceNumber;
+				}
+				break;
+			case SNAKE:
+				playerPositionArray[i] = playerPositionArray[i] - diceNumber;
+
+				if (playerPositionArray[i] < 0) {
+					playerPositionArray[i] = START_POSITION;
+				}
+				break;
+
 			}
-
-			break;
-		case SNAKE:
-			playerPosition -= diceNumber;
-
-			break;
-		case NO_PLAY:
-			System.out.println("you are in same position");
-			break;
-
+			System.out.println(playerPositionArray[i]);
 		}
-
-		System.out.println("player position: " + playerPosition + " " + "Dice Roll count: " + diceRollCount);
-
-		if (playerPosition <= 0) {
-			playerPosition = 0;
-
-		}
-		 if (playerPosition > WINNING_POINT) {
-                                playerPosition = currentPosition;
-                        }
-
 
 	}
 
-	// function to decide player winning
-	public void checkPlayerWin() {
+	int winTurn = 0;
 
-		while (playerPosition != WINNING_POINT) {
-			getPlayerPosition();
-			diceRollCount++;
+	public void checkWinPlayer() {
+		while (winTurn != 1) {
+			for (int i = 0; i < playerPositionArray.length; i++) {
+
+				System.out.println("players turn: " + i);
+				playing();
+
+				if (playerPositionArray[i] == WINING_POINT) {
+					winTurn = 1;
+					System.out.println("player " + (i + 1)+" win");
+					break;
+				}
+
+			}
 		}
 
-		if (playerPosition == WINNING_POINT) {
-			System.out.println("player won the game!!!" + "number of times dice was played: " + diceRollCount);
-		}
+		for (int i = 0; i < playerPositionArray.length; i++) {
 
+			System.out.println("current postion of player: " + (i + 1) + " " + playerPositionArray[i]);
+
+		}
 	}
 
 	public static void main(String[] args) {
-
 		SnakeAndLadder object = new SnakeAndLadder();
-		object.checkPlayerWin();
+
+		object.checkWinPlayer();
 	}
 
 }
+
+
