@@ -37,11 +37,8 @@ public class SnakeAndLadder {
 			int diceNumber = getDiceRoll();
 			int moveType = getMoveType();
 
-			// currentPosition = playerPositionArray[i];
-			// if (playerPositionArray[i] > 100) {
-			// playerPositionArray[i] = currentPosition;
-			// }
-			switch (moveType) {
+			switch(moveType)
+			{
 			case NO_PLAY:
 				System.out.println("no play");
 				break;
