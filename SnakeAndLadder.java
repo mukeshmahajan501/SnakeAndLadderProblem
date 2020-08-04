@@ -1,11 +1,16 @@
 
+
 import java.util.Random;
 
 public class SnakeAndLadder {
 	// initializing variable
-	int playerPosition = 0;
-	int currentPosition = 0;
-	int dieRollCount = 0;
+	int playerPosition;
+	int currentPosition;
+	int diceRollCount;
+	final int WINNING_POINT = 100;
+	final int LADDER = 1;
+	final int SNAKE = 2;
+	final int NO_PLAY = 3;
 
 	// function to get which type of move should player to play
 	public int moveType() {
@@ -20,49 +25,61 @@ public class SnakeAndLadder {
 
 	}
 
-	// function to decide which type of move player played.
-	public void movingPosition() {
+	// function to get player position
+	public void getPlayerPosition() {
 
 		int moveType = moveType();
-		int dieNumber = getRollDieNumber();
+		int diceNumber = getRollDieNumber();
 
-		dieRollCount++;
 		// assign player position to current position
 		currentPosition = playerPosition;
 
 		System.out.println("move type: " + moveType);
-		System.out.println("roll die Number: " + dieNumber);
+		System.out.println("roll dice Number: " + diceNumber);
 		System.out.println("current position: " + currentPosition);
 
-		if (moveType == 1) {
-			playerPosition += dieNumber;
-		} else if (moveType == 2) {
-			playerPosition -= dieNumber;
+		switch (moveType) {
+		case LADDER:
+			if (playerPosition + diceNumber > WINNING_POINT) {
+				System.out.println("skip !!try again");
+			} else {
+				playerPosition += diceNumber;
+			}
 
-		} else {
-			playerPosition = currentPosition;
+			break;
+		case SNAKE:
+			playerPosition -= diceNumber;
+
+			break;
+		case NO_PLAY:
+			System.out.println("you are in same position");
+			break;
+
 		}
-		System.out.println("player position: " + playerPosition + " " + "Die Roll count: " + dieRollCount);
+
+		System.out.println("player position: " + playerPosition + " " + "Dice Roll count: " + diceRollCount);
 
 		if (playerPosition <= 0) {
 			playerPosition = 0;
-		}
 
-		if (playerPosition > 100) {
-			playerPosition = currentPosition;
 		}
+		 if (playerPosition > WINNING_POINT) {
+                                playerPosition = currentPosition;
+                        }
+
 
 	}
 
 	// function to decide player winning
 	public void checkPlayerWin() {
 
-		while (playerPosition != 100) {
-			movingPosition();
+		while (playerPosition != WINNING_POINT) {
+			getPlayerPosition();
+			diceRollCount++;
 		}
 
-		if (playerPosition == 100) {
-			System.out.println("player won the game!!!" + "number of times dice was played: " + dieRollCount);
+		if (playerPosition == WINNING_POINT) {
+			System.out.println("player won the game!!!" + "number of times dice was played: " + diceRollCount);
 		}
 
 	}
